@@ -1,6 +1,5 @@
 cd src
-dasm knifeman.asm -f3 -v0 -sKNIFEMAN.sym -lKNIFEMAN.lst -oKNIFEMAN.a26
-move KNIFEMAN.a26 ../build
-move KNIFEMAN.sym ../build
-move KNIFEMAN.lst ../build
+dasm knifeman.asm -f3 -v0 -sKNIFEMAN_PAL.sym -lKNIFEMAN_PAL.lst -DREGION=0 -oKNIFEMAN_PAL.a26
+dasm knifeman.asm -f3 -v0 -sKNIFEMAN_NTSC.sym -lKNIFEMAN_NTSC.lst -DREGION=1 -oKNIFEMAN_NTSC.a26 
+move KNIFEMAN_* ../build
 cd ..
