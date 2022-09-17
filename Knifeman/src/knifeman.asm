@@ -1,33 +1,22 @@
 ;
 ;   KNIFEMAN
+;   build - 
+;       dasm knifeman.asm -f3 -v0 -sKNIFEMAN_PAL.sym -lKNIFEMAN_PAL.lst -DREGION=0 -oKNIFEMAN_PAL.a26
+;       dasm knifeman.asm -f3 -v0 -sKNIFEMAN_NTSC.sym -lKNIFEMAN_NTSC.lst -DREGION=1 -oKNIFEMAN_NTSC.a26 
 ;
-    PROCESSOR 6502
-    
+    processor 6502
         include "../../shared/vcs.h"  
         include "../../shared/macro.h"
 
 ;
-;   Config Constants 
+;    Constants  
 ;
 PAL = 0
 NTSC = 1
 
-; 
-;   Configuration
-;
-
-REGION = NTSC
-
-;
-;    Constants  
-;
-
-#if REGION = PAL
-    SCREENHEIGHT = 224
-#endif
-
+ScreenLines = 224
 #if REGION = NTSC
-    SCREENHEIGHT = 192
+    ScreenLines = 192
 #endif
 
 ;
@@ -81,12 +70,7 @@ Kernel:
     lda INTIM       
     bne Kernel      ; Wait for timer...
     sta VBLANK      ; Turn off Vblank
-#if REGION = PAL
-    ldx #224
-#endif
-#if REGION = NTSC
     ldx #192
-#endif
     ldy #0          ; Y = 0
 KernelLoop:
     stx WSYNC       ; Wait for scanline
@@ -97,13 +81,6 @@ KernelLoop:
     lda Titlescreen,Y   ; Load Titlescreen[y]
     iny             ; ++y
     dex             ; --x
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop 
-    nop 
     nop
     stx PF0
     bne KernelLoop  ; loop if (x != 0)
