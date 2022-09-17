@@ -7,7 +7,7 @@
     processor 6502
         include "../../shared/vcs.h"  
         include "../../shared/macro.h"
-        include "../../shared/constants.h"
+        include "../../shared/constants.asm"
 
 ;
 ;    Region Constants  
