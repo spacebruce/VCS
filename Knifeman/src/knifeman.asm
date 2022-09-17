@@ -3,8 +3,8 @@
 ;
     PROCESSOR 6502
     
-        include vcs.h       
-        include macro.h
+        include "../../shared/vcs.h"  
+        include "../../shared/macro.h"
 
 ;
 ;   Config Constants 
