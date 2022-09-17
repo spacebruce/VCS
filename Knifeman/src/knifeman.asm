@@ -71,7 +71,7 @@ Kernel:
     lda INTIM       
     bne Kernel      ; Wait for timer...
     sta VBLANK      ; Turn off Vblank
-    ldx #192
+    ldx #ScreenLines
     ldy #0          ; Y = 0
 KernelLoop:
     stx WSYNC       ; Wait for scanline
@@ -82,6 +82,13 @@ KernelLoop:
     lda Titlescreen,Y   ; Load Titlescreen[y]
     iny             ; ++y
     dex             ; --x
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop 
+    nop 
     nop
     stx PF0
     bne KernelLoop  ; loop if (x != 0)
