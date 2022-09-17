@@ -7,16 +7,17 @@
     processor 6502
         include "../../shared/vcs.h"  
         include "../../shared/macro.h"
+        include "../../shared/constants.h"
 
 ;
-;    Constants  
+;    Region Constants  
 ;
-PAL = 0
-NTSC = 1
 
-ScreenLines = 224
+#if REGION = PAL
+ScreenLines = #224
+#endif
 #if REGION = NTSC
-    ScreenLines = 192
+ScreenLines = #192
 #endif
 
 ;
