@@ -76,21 +76,12 @@ Kernel:
 KernelLoop:
     stx WSYNC       ; Wait for scanline
     stx COLUBK      ; BG Col = x
-    stx PF0
-    sta PF1         ; Store in pf1
-    stx PF2         ; Store PF2 = x
     lda Titlescreen,Y   ; Load Titlescreen[y]
+    sta PF0
+    sta PF1         ; Store in pf1
+    sta PF2         ; Store PF2 = x
     iny             ; ++y
     dex             ; --x
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop 
-    nop 
-    nop
-    stx PF0
     bne KernelLoop  ; loop if (x != 0)
     rts             ;   return
 
