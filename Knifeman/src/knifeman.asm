@@ -80,31 +80,42 @@ vbLoop:
 Kernel:
     sta WSYNC       ; Wait for TV SYNC
     lda INTIM       
-    bne Kernel      ; Wait for timer...
+    bne Kernel      ; Hold on timer
     sta VBLANK      ; Turn off Vblank
     ldx #ScreenLines
     stx LineY
-    ldx #4
+    ldx #12
     stx Temp1
     ldy #0
     sty Temp2
 KernelLoop:
     stx WSYNC       ; Wait for scanline
     stx COLUBK      
-    
     ldx Temp1
     ldy Temp2       ;   Y position in sprite
     dex
     bne AddLine
-    ldx #4
+    ldx #6
     iny
     sty Temp2
 AddLine:
     lda Titlescreen,Y   ; Load Titlescreen[y]
     stx Temp1
-    sta PF1
-
-    ldx LineY       ;   count down scanlines until 0
+    sta PF2
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    lda #0
+    sta PF2
+    ldx LineY       ;   
     dex
     stx LineY
     bne KernelLoop  ; loop if (x != 0)
@@ -132,7 +143,8 @@ osLoop:
 
 ; Graphics 
     align 256
-Titlescreen:    ;30 bytes
+Titlescreen:    ;31 bytes
+    .byte %00000000 ; empty
     .byte %01000010 ; H
     .byte %01000010
     .byte %01111110
