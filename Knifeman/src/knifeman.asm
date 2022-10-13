@@ -30,6 +30,17 @@ GameMode    ds 1        ; GameMode (0 : Titlescreen, 1 : Victim, 2 : Killer, 3 :
 Temp1       ds 1
 Temp2       ds 1
 
+VictimX     ds 2        ;   8.8 fractional   
+VictimY     ds 2
+VictimRoom  ds 1
+
+KillerX     ds 2
+KillerY     ds 2
+KillerRoom  ds 1
+
+;Rendering
+LineY       ds 1
+
 ; ROM
     SEG CODE        
     ; ORG $F800       ; 2K ROM starts at $F800, 4K ROM starts at $F000
@@ -72,16 +83,30 @@ Kernel:
     bne Kernel      ; Wait for timer...
     sta VBLANK      ; Turn off Vblank
     ldx #ScreenLines
-    ldy #0          ; Y = 0
+    stx LineY
+    ldx #4
+    stx Temp1
+    ldy #0
+    sty Temp2
 KernelLoop:
     stx WSYNC       ; Wait for scanline
-    stx COLUBK      ; BG Col = x
+    stx COLUBK      
+    
+    ldx Temp1
+    ldy Temp2       ;   Y position in sprite
+    dex
+    bne AddLine
+    ldx #4
+    iny
+    sty Temp2
+AddLine:
     lda Titlescreen,Y   ; Load Titlescreen[y]
-    sta PF0
-    sta PF1         ; Store in pf1
-    sta PF2         ; Store PF2 = x
-    iny             ; ++y
-    dex             ; --x
+    stx Temp1
+    sta PF1
+
+    ldx LineY       ;   count down scanlines until 0
+    dex
+    stx LineY
     bne KernelLoop  ; loop if (x != 0)
     rts             ;   return
 
@@ -105,8 +130,9 @@ osLoop:
     bne osLoop  ; Branch if Not Equal to 0
     rts         ; ReTurn from Subroutine
 
+; Graphics 
     align 256
-Titlescreen:
+Titlescreen:    ;30 bytes
     .byte %01000010 ; H
     .byte %01000010
     .byte %01111110
@@ -137,6 +163,25 @@ Titlescreen:
     .byte %00100100
     .byte %00011000
     .byte %00000000
+
+.PlayerSprite:  ;   8 bytes
+    .byte %00011000
+    .byte %00111100
+    .byte %01111110
+    .byte %11111111
+    .byte %11111111
+    .byte %01111110
+    .byte %00111100
+    .byte %00011000
+.KillerSprite:  ;   8 bytes
+    .byte %01111110
+    .byte %10000001
+    .byte %10100101
+    .byte %10100101
+    .byte %10000001
+    .byte %10111101
+    .byte %10000001
+    .byte %01111110
 ;===============================================================================
 ; Define End of Cartridge
 ;===============================================================================
