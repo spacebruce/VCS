@@ -90,7 +90,7 @@ Kernel:
     sty Temp2
 KernelLoop:
     stx WSYNC       ; Wait for scanline
-    stx COLUBK      
+    stx COLUBK
     ldx Temp1
     ldy Temp2       ;   Y position in sprite
     dex
@@ -99,22 +99,18 @@ KernelLoop:
     iny
     sty Temp2
 AddLine:
-    lda Titlescreen,Y   ; Load Titlescreen[y]
     stx Temp1
-    sta PF2
+    lda Hello,Y   ; Load Titlescreen[y]
+    sta GRP1
+    lda World,Y
+    sta GRP0
     nop
     nop
     nop
     nop
     nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
-    lda #0
-    sta PF2
+    sta GRP0
+    sta HMOVE
     ldx LineY       ;   
     dex
     stx LineY
@@ -143,7 +139,7 @@ osLoop:
 
 ; Graphics 
     align 256
-Titlescreen:    ;31 bytes
+Hello:    ;31 bytes
     .byte %00000000 ; empty
     .byte %01000010 ; H
     .byte %01000010
@@ -175,6 +171,40 @@ Titlescreen:    ;31 bytes
     .byte %00100100
     .byte %00011000
     .byte %00000000
+World:
+    .byte %00000000 ; empty
+    .byte %10000001 ; W
+    .byte %10000001 ; 
+    .byte %01000010 
+    .byte %01011010
+    .byte %00100100
+    .byte %00000000
+    .byte %00011000 ; O
+    .byte %00100100
+    .byte %01000010
+    .byte %00100100
+    .byte %00011000
+    .byte %00000000
+    .byte %11111110 ; R
+    .byte %10000001
+    .byte %11111110
+    .byte %11100000
+    .byte %10000111
+    .byte %00000000
+    .byte %01000000 ; L
+    .byte %01000000
+    .byte %01000000
+    .byte %01000000
+    .byte %01111110
+    .byte %00000000
+    .byte %11111110 ; D
+    .byte %10000001
+    .byte %10000001
+    .byte %10000001
+    .byte %11111110
+    .byte %00000000
+
+
 
 .PlayerSprite:  ;   8 bytes
     .byte %00011000
